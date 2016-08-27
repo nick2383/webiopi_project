@@ -52,3 +52,13 @@ def setLightHours(on, off):
     HOUR_ON = int(on)
     HOUR_OFF = int(off)
     return getLightHours()
+
+# toggle light state with "0" and "1"
+@webiopi.macro
+def toggleLight(state):
+    # GPIO.digitalWrite(LIGHT, GPIO.HIGH)
+    if(state == "0"):
+        GPIO.digitalWrite(LIGHT, GPIO.LOW)
+    elif (state == "1"):
+        GPIO.digitalWrite(LIGHT, GPIO.HIGH)
+    return "%d;%d" % (HOUR_ON, HOUR_OFF)
