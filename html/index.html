@@ -12,37 +12,22 @@
         window.onload=function(){
             // instantiate a keypress listener
             var listener = new window.keypress.Listener();
-            // define scope
-            // var myscope = this;
-            // // describe key combos
-            // var my_combos = listener.register_many([
-            //     {
-            //         "keys"          : "0",
-            //         "is_exlusive"   : true,
-            //         "on_keydown"    : function(){
-            //             webiopi().callMacro("toggleLight", ["0"], updateLightHours);
-            //         },
-            //         "this"          : my_scope
-            //     },
-            //     {
-            //         "keys"          : "1",
-            //         "is_exlusive"   : true,
-            //         "on_keydown"    : function() {
-            //             webiopi().callMacro("toggleLight", ["1"], updateLightHours);
-            //         },
-            //         "this"          : my_scope
-            //     },
 
-            // ]);
-
-
-            listener.simple_combo("0", function() {
-                // turn off light by pressing "0"
-                webiopi().callMacro("toggleLight", ["0"], updateLightHours);
+            listener.register_combo({
+                "keys"          : "0",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("toggleLight", ["0"], updateLightHours);
+                },
+                "on_keyup"      : function(){
+                    webiopi().callMacro("toggleLight", ["1"], updateLightHours);
+                },
             });
-            listener.simple_combo("1", function() {
-                // turn on light by pressing "1"
-                webiopi().callMacro("toggleLight", ["1"], updateLightHours);
+
+            listener.register_combo({
+                "keys"          : "1",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("toggleLight", ["1"], updateLightHours);
+                },
             });
 
         }
