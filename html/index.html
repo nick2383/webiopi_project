@@ -13,87 +13,106 @@
             // instantiate a keypress listener
             var listener = new window.keypress.Listener();
 
-            listener.register_combo({
-                "keys"          : "0",
-                "on_keydown"    : function(){
-                    webiopi().callMacro("toggleLight", ["0"], updateLightHours);
-                },
-                "on_keyup"      : function(){
-                    webiopi().callMacro("toggleLight", ["1"], updateLightHours);
-                },
-            });
-
+            // key "1" pressed = mode 1 (Tiller + Motor)
             listener.register_combo({
                 "keys"          : "1",
                 "on_keydown"    : function(){
-                    webiopi().callMacro("toggleLight", ["1"], updateLightHours);
+                    webiopi().callMacro("setMode", ["1"], updateMode);
+                },
+            });
+
+            // key "2" pressed = mode 2 (Hopper + Foot)
+            listener.register_combo({
+                "keys"          : "2",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("setMode", ["2"], updateMode);
+                },
+            });
+
+            // key "3" pressed = mode 3 (Spike + Beak)
+            listener.register_combo({
+                "keys"          : "3",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("setMode", ["3"], updateMode);
+                },
+            });
+
+            // key "up" pressed = M1 forward
+            listener.register_combo({
+                "keys"          : "up",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("DriveM1", [127], updateMotor1);
+                },
+                "on_keyup"    : function(){
+                    webiopi().callMacro("DriveM1", [64], updateMotor1);
+                },
+            });
+
+            // key "down" pressed = M1 reverse
+            listener.register_combo({
+                "keys"          : "down",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("DriveM1", [0], updateMotor1);
+                },
+                "on_keyup"    : function(){
+                    webiopi().callMacro("DriveM1", [64], updateMotor1);
+                },
+            });
+
+            // key "right" pressed = M2 forward
+            listener.register_combo({
+                "keys"          : "right",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("DriveM2", [127], updateMotor2);
+                },
+                "on_keyup"    : function(){
+                    webiopi().callMacro("DriveM2", [64], updateMotor2);
+                },
+            });
+
+            // key "down" pressed = M2 reverse
+            listener.register_combo({
+                "keys"          : "left",
+                "on_keydown"    : function(){
+                    webiopi().callMacro("DriveM2", [0], updateMotor2);
+                },
+                "on_keyup"    : function(){
+                    webiopi().callMacro("DriveM2", [64], updateMotor2);
                 },
             });
 
         }
-        // Following function will process data received from set/getLightHours macro.
-        var updateLightHours = function(macro, args, response) {
-                    var hours = response.split(";");
+        // update the current mode indicator on the webpage
+        var updateMode= function(macro, args, response) {
                     // Following lines use jQuery functions
-                    $("#inputOn").val(hours[0]);
-                    $("#inputOff").val(hours[1]);
+                    $("#mode").text(response);
         }
 
-        // Immediately call getLightHours macro to update the UI with current values
-        // "getLightHours" refers to macro name
-                // [] is an empty array, because getLightHours macro does not take any argument
-                // updateLightHours is the callback function, defined above
-                webiopi().callMacro("getLightHours", [], updateLightHours);
+        // update motor1 status
+        var updateMotor1= function(macro, args, response) {
+                    // Following lines use jQuery functions
+                    $("#motor1").text(response);
+        }
 
-        // Create a button to call setLightHours macro
-        var sendButton = webiopi().createButton("sendButton", "Send", function() {
-           // Arguments sent to the macro
-                    var hours = [$("#inputOn").val(), $("#inputOff").val()];
-            // Call the macro
-                    webiopi().callMacro("setLightHours", hours, updateLightHours);
-                });
+        // update motor2 status
+        var updateMotor2= function(macro, args, response) {
+                    // Following lines use jQuery functions
+                    $("#motor2").text(response);
+        }
 
-        // Append the button to the controls box using a jQuery function
-                $("#controls").append(sendButton);
-
-        // Create a "Light" labeled button for GPIO 17
-        var button = webiopi().createGPIOButton(17, "Light");
-
-        // Append the button to the controls box
-        $("#controls").append(button);
-
-        // Refresh GPIO buttons
-        // pass true to refresh repeatedly of false to refresh once
         webiopi().refreshGPIO(true);
 
         });
 
     </script>
-    <style type="text/css">
-        button {
-            display: block;
-            margin: 5px 5px 5px 5px;
-            width: 160px;
-            height: 45px;
-            font-size: 24pt;
-            font-weight: bold;
-            color: white;
-        }
-
-        #gpio17.LOW {
-            background-color: Black;
-        }
-
-        #gpio17.HIGH {
-            background-color: Blue;
-        }
-    </style>
 </head>
 <body>
-    <div align="center">
-        Turn On at :<input type="text" id="inputOn" /><br/>
-        Turn Off at: <input type="text" id="inputOff" /><br/>
-        <div id="controls"></div>
-    </div>
+    <!-- current mode indicator-->
+    <div id = "mode">Awating input...</div>
+    <!-- motor1 status-->
+    <div id = "motor1">Awating input...</div>
+    <!-- motor2 status-->
+    <div id = "motor2">Awating input...</div>
+
 </body>
 </html>
