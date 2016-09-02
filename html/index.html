@@ -41,9 +41,11 @@
             listener.register_combo({
                 "keys"          : "up",
                 "on_keydown"    : function(){
+                    // webiopi().callMacro("DriveM1", [127], updateMotor1);
                     webiopi().callMacro("DriveM1", [127], updateMotor1);
                 },
                 "on_keyup"    : function(){
+                    // webiopi().callMacro("DriveM1", [64], updateMotor1);
                     webiopi().callMacro("DriveM1", [64], updateMotor1);
                 },
             });
@@ -52,9 +54,11 @@
             listener.register_combo({
                 "keys"          : "down",
                 "on_keydown"    : function(){
-                    webiopi().callMacro("DriveM1", [0], updateMotor1);
+                    // webiopi().callMacro("DriveM1", [0], updateMotor1);
+                    webiopi().callMacro("DriveM1", [1], updateMotor1);
                 },
                 "on_keyup"    : function(){
+                    // webiopi().callMacro("DriveM1", [64], updateMotor1);
                     webiopi().callMacro("DriveM1", [64], updateMotor1);
                 },
             });
@@ -63,10 +67,12 @@
             listener.register_combo({
                 "keys"          : "right",
                 "on_keydown"    : function(){
-                    webiopi().callMacro("DriveM2", [127], updateMotor2);
+                    // webiopi().callMacro("DriveM2", [127], updateMotor2);
+                    webiopi().callMacro("DriveM2", [255], updateMotor2);
                 },
                 "on_keyup"    : function(){
-                    webiopi().callMacro("DriveM2", [64], updateMotor2);
+                    // webiopi().callMacro("DriveM2", [64], updateMotor2);
+                    webiopi().callMacro("DriveM2", [192], updateMotor2);
                 },
             });
 
@@ -74,10 +80,12 @@
             listener.register_combo({
                 "keys"          : "left",
                 "on_keydown"    : function(){
-                    webiopi().callMacro("DriveM2", [0], updateMotor2);
+                    // webiopi().callMacro("DriveM2", [0], updateMotor2);
+                    webiopi().callMacro("DriveM2", [128], updateMotor2);
                 },
                 "on_keyup"    : function(){
-                    webiopi().callMacro("DriveM2", [64], updateMotor2);
+                    // webiopi().callMacro("DriveM2", [64], updateMotor2);
+                    webiopi().callMacro("DriveM2", [192], updateMotor2);
                 },
             });
 
