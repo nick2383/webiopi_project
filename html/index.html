@@ -8,10 +8,10 @@
     <script type="text/javascript" src="keypress.js"></script>
     <script type="text/javascript">
     webiopi().ready(function() {
-        // wait for page to load
-        window.onload=function(){
             // instantiate a keypress listener
             var listener = new window.keypress.Listener();
+
+            /*** RELAY CONTROLS ***/
 
             // key "1" pressed = mode 1 (Tiller + Motor)
             listener.register_combo({
@@ -37,59 +37,58 @@
                 },
             });
 
+            /*** M1 CONTROLS ***/
+
             // key "up" pressed = M1 forward
             listener.register_combo({
-                "keys"          : "up",
-                "on_keydown"    : function(){
-                    // webiopi().callMacro("DriveM1", [127], updateMotor1);
-                    webiopi().callMacro("DriveM1", [127], updateMotor1);
+                "keys"           : "up",
+                "prevent_repeat" : true,
+                "on_keydown"     : function(){
+                    webiopi().callMacro("M1Forward", [], updateMotor1);
                 },
                 "on_keyup"    : function(){
-                    // webiopi().callMacro("DriveM1", [64], updateMotor1);
-                    webiopi().callMacro("DriveM1", [64], updateMotor1);
+                    webiopi().callMacro("M1Stop", [], updateMotor1);
                 },
             });
 
             // key "down" pressed = M1 reverse
             listener.register_combo({
-                "keys"          : "down",
-                "on_keydown"    : function(){
-                    // webiopi().callMacro("DriveM1", [0], updateMotor1);
-                    webiopi().callMacro("DriveM1", [1], updateMotor1);
+                "keys"           : "down",
+                "prevent_repeat" : true,
+                "on_keydown"     : function(){
+                    webiopi().callMacro("M1Reverse", [], updateMotor1);
                 },
                 "on_keyup"    : function(){
-                    // webiopi().callMacro("DriveM1", [64], updateMotor1);
-                    webiopi().callMacro("DriveM1", [64], updateMotor1);
+                    webiopi().callMacro("M1Stop", [], updateMotor1);
                 },
             });
+
+            /*** M2 CONTROLS ***/
 
             // key "right" pressed = M2 forward
             listener.register_combo({
                 "keys"          : "right",
+                "prevent_repeat" : true,
                 "on_keydown"    : function(){
-                    // webiopi().callMacro("DriveM2", [127], updateMotor2);
-                    webiopi().callMacro("DriveM2", [255], updateMotor2);
+                    webiopi().callMacro("M2Forward", [], updateMotor2);
                 },
                 "on_keyup"    : function(){
-                    // webiopi().callMacro("DriveM2", [64], updateMotor2);
-                    webiopi().callMacro("DriveM2", [192], updateMotor2);
+                    webiopi().callMacro("M2Stop", [], updateMotor2);
                 },
             });
 
             // key "down" pressed = M2 reverse
             listener.register_combo({
                 "keys"          : "left",
+                "prevent_repeat" : true,
                 "on_keydown"    : function(){
-                    // webiopi().callMacro("DriveM2", [0], updateMotor2);
-                    webiopi().callMacro("DriveM2", [128], updateMotor2);
+                    webiopi().callMacro("M2Reverse", [], updateMotor2);
                 },
                 "on_keyup"    : function(){
-                    // webiopi().callMacro("DriveM2", [64], updateMotor2);
-                    webiopi().callMacro("DriveM2", [192], updateMotor2);
+                    webiopi().callMacro("M2Stop", [], updateMotor2);
                 },
             });
 
-        }
         // update the current mode indicator on the webpage
         var updateMode= function(macro, args, response) {
                     // Following lines use jQuery functions

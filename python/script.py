@@ -1,7 +1,4 @@
 import webiopi
-#import serial
-import struct
-import time
 from webiopi.devices.serial import Serial
 
 GPIO = webiopi.GPIO
@@ -11,9 +8,7 @@ RELAY2 = 19 # GPIO pin for RELAY2 using BCM numbering
 RELAY3 = 13 # GPIO pin for RELAY3 using BCM numbering
 RELAY4 = 6 # GPIO pin for RELAY4 using BCM numbering
 
-# port = serial.Serial("/dev/ttyACM0", baudrate=115200, timeout=0.1)
-serial = Serial("ttyAMA0", 9600)
-# checksum = 0
+port = Serial("ttyACM0", 9600)
 
 # setup function is automatically called at WebIOPi startup
 def setup():
@@ -29,7 +24,6 @@ def setup():
 
 # loop function is repeatedly called by WebIOPi 
 def loop():
-
     # gives CPU some time before looping again
     webiopi.sleep(1)
 
@@ -62,61 +56,33 @@ def setMode(state):
         GPIO.digitalWrite(RELAY4, GPIO.HIGH)
         return "MODE 3 \n M1 = Spike (UP/DOWN) \n M2 = Beak (LEFT/RIGHT)"
 
-# # motor control functions
-# def sendcommand(address,command):
-#     global checksum
-#     checksum = address
-#     port.write(chr(address));
-#     checksum += command
-#     port.write(chr(command));
-#     return;
-
-# def writebyte(val):
-#     global checksum
-#     checksum += val
-#     return port.write(struct.pack('>B',val));
+@webiopi.macro
+def M1Forward():
+    port.writeByte(0x61)
+    return "Motor1 forward..."
 
 @webiopi.macro
-def DriveM1(val):
-    serial.writeByte(int(val))
-    if(val == "127"):
-        return "Motor1 forward..."
-    elif(val == "64"):
-        return "Motor1 stopped..."
-    else:
-        return "Motor1 reverse..."
+def M1Stop():
+    port.writeByte(0x62)
+    return "Motor1 stopped..."
 
 @webiopi.macro
-def DriveM2(val):
-    serial.writeByte(int(val))
-    if(val == "255"):
-        return "Motor2 forward..."
-    elif(val == "192"):
-        return "Motor2 stopped..."
-    else:
-        return "Motor2 reverse..."
+def M1Reverse():
+    port.writeByte(0x63)
+    return "Motor1 reverse..."
+    
+@webiopi.macro
+def M2Forward():
+    port.writeByte(0x64)
+    return "Motor2 forward..."
 
-# @webiopi.macro
-# def DriveM1(val):
-#     sendcommand(128,6)
-#     writebyte(val)
-#     writebyte(checksum&0x7F);
-#     if(val == 127):
-#         return "Motor1 forward..."
-#     elif(val == 0):
-#         return "Motor1 stopped..."
-#     else:
-#         return "Motor1 reverse..."
+@webiopi.macro
+def M2Stop():
+    port.writeByte(0x65)
+    return "Motor2 stopped..."
 
-# @webiopi.macro
-# def DriveM2(val):
-#     sendcommand(128,7)
-#     writebyte(val)
-#     writebyte(checksum&0x7F);
-#     if(val == 127):
-#         return "Motor2 forward..."
-#     elif(val == 0):
-#         return "Motor2 stopped..."
-#     else:
-#         return "Motor2 reverse..."
+@webiopi.macro
+def M2Reverse():
+    port.writeByte(0x66)
+    return "Motor2 reverse..."
     
